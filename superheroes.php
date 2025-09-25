@@ -79,7 +79,7 @@ else if (empty($query)) {
     $found_hero = null;
     foreach ($superheroes as $hero) {
         // Perform a case-insensitive search.
-        if (strcasecmp($hero['alias'], $query) === 0) {
+        if (strcasecmp($hero['alias'], $query) === 0 || strcasecmp($hero['name'], $query) === 0) {
             $found_hero = $hero;
             break;
         }
