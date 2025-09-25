@@ -1,4 +1,5 @@
 <?php
+$query = $_GET['query'] ?? '';
 
 $superheroes = [
   [
@@ -63,10 +64,36 @@ $superheroes = [
   ], 
 ];
 
-?>
+// If the query variable is empty, return a list of all aliases.
+if (!preg_match("/^[a-zA-Z\s]*$/", $query)) {
+    echo "Please enter a valid superhero name (max 20 characters, letters and spaces only).";
+}
+else if (empty($query)) {
+    echo "<ul>";
+    foreach ($superheroes as $hero) {
+        echo "<li>{$hero['alias']}</li>";
+    }
+    echo "</ul>";
+} else {
+    // If a query exists, search for a matching alias.
+    $found_hero = null;
+    foreach ($superheroes as $hero) {
+        // Perform a case-insensitive search.
+        if (strcasecmp($hero['alias'], $query) === 0) {
+            $found_hero = $hero;
+            break;
+        }
+    }
 
-<ul>
-<?php foreach ($superheroes as $superhero): ?>
-  <li><?= $superhero['alias']; ?></li>
-<?php endforeach; ?>
-</ul>
+    // If a hero is found, display their details.
+    if ($found_hero) {
+        echo "<h3>{$found_hero['alias']}</h3>";
+        echo "<h4>{$found_hero['name']}</h4>";
+        echo "<p>{$found_hero['biography']}</p>";
+    } else {
+        // If no hero is found, display the "not found" message.
+        echo "Superhero not found";
+    }
+}
+
+?>
